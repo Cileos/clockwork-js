@@ -9,7 +9,7 @@ moduleForComponent('calendar-teams-over-week', 'CalendarTeamsOverWeekComponent',
 });
 
 test('it renders', function() {
-  expect(2);
+  expect(3);
 
   // creates the component instance
   var component = this.subject();
@@ -18,4 +18,7 @@ test('it renders', function() {
   // appends the component to the page
   this.append();
   equal(component._state, 'inDOM');
+
+  var content = component.$().text();
+  equal(content.indexOf('fnord'), 0, 'does not render the right template');
 });
