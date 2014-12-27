@@ -15,13 +15,12 @@ matchesTable = ($ele, line_sel, col_sel, stringy_expected)->
       col.trim()
   # TODO validate that table is well-formed (all lines equal length)
 
-  actual = $ele.find(line_sel).map ->
-    $(this).find(col_sel).map ->
-      $(this).text().trim()
-    .get()
-  .get()
+  actual = for line in $ele.find(line_sel).toArray()
+    for col in $(line).find(col_sel).toArray()
+      $(col).text().trim()
 
-  equal actual, expected
+  equal actual.length, expected.length
+  deepEqual actual, expected
 
 test 'it renders', ->
   expect(3)
