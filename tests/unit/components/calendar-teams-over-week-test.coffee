@@ -2,11 +2,26 @@
   moduleForComponent,
   test
 } from 'ember-qunit'`
+#`import matchesTable from '../../../tests/helpers/matches-table';`
 
 moduleForComponent('calendar-teams-over-week', 'CalendarTeamsOverWeekComponent', {
   # specify the other units that are required for this test
   # needs: ['component:foo', 'helper:bar']
 })
+
+matchesTable = ($ele, line_sel, col_sel, stringy_expected)->
+  expected = for line in stringy_expected.split("\n")
+    for col in line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|')
+      col.trim()
+  # TODO validate that table is well-formed (all lines equal length)
+
+  actual = $ele.find(line_sel).map ->
+    $(this).find(col_sel).map ->
+      $(this).text().trim()
+    .get()
+  .get()
+
+  equal actual, expected
 
 test 'it renders', ->
   expect(3)
@@ -20,4 +35,16 @@ test 'it renders', ->
   equal(component._state, 'inDOM')
 
   content = component.$().text()
-  equal(content.indexOf('fnord'), 0, 'does not render the right template')
+  equal(content.indexOf('Teams'), 0, 'does not render the right template')
+
+
+test 'it renders items grouped in table (fake)', ->
+  c = this.subject()
+  this.append()
+
+  matchesTable c.$(), 'tr', 'th,td', """
+    | Teams | Mo   | Di   | Mi | Do         | Fr | Sa | So |
+    | Blue  |      | 9-13 |    |            |    |    |    |
+    | Green |      |      |    | 8-12 14-18 |    |    |    |
+    | Red   | 8-12 |      |    |            |    |    |    |
+  """

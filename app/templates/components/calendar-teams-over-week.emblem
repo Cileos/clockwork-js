@@ -1,2 +1,38 @@
-| fnord
-= yield
+thead
+  tr
+    th Teams
+    th Mo
+    th Di
+    th Mi
+    th Do
+    th Fr
+    th Sa
+    th So
+tbody
+  tr
+    td Blue
+    td
+    td 9-13
+    td
+    td
+    td
+    td
+    td
+  tr
+    td Green
+    td
+    td
+    td
+    td 8-12 14-18
+    td
+    td
+    td
+  tr
+    td Red
+    td 8-12
+    td
+    td
+    td
+    td
+    td
+    td

@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 
 Component = Ember.Component.extend
-  foo: 23
+  tagName: 'table'
 
 `export default Component`
 
