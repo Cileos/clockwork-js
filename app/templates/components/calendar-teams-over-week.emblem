@@ -9,11 +9,11 @@ thead
     th Sa
     th So
 tbody
-  each team in teams
+  each row in structure.rows
     tr
-      td= team.name
+      td= row.team.name
       td
-      td 9-13
+      td
       td
       td
       td
