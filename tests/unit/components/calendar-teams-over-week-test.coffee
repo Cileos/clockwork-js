@@ -47,3 +47,14 @@ test 'it renders items grouped in table (fake)', ->
     | Green |      |      |    | 8-12 14-18 |    |    |    |
     | Red   | 8-12 |      |    |            |    |    |    |
   """
+
+test 'it decorates each given content item to calculate needed properties without having to change the original class', ->
+  c = this.subject()
+  source = Ember.Object.create
+    startsAt: '2014-12-15T08:00:00.000+01:00'
+  c.set 'content', [source]
+
+  equal c.get('decoratedContent.firstObject.startHour'), 8
+
+  source.set 'startsAt', '2014-12-15T14:00:00.000+01:00'
+  equal c.get('decoratedContent.firstObject.startHour'), 14
