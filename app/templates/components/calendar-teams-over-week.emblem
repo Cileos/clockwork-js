@@ -9,30 +9,13 @@ thead
     th Sa
     th So
 tbody
-  tr
-    td Blue
-    td
-    td 9-13
-    td
-    td
-    td
-    td
-    td
-  tr
-    td Green
-    td
-    td
-    td
-    td 8-12 14-18
-    td
-    td
-    td
-  tr
-    td Red
-    td 8-12
-    td
-    td
-    td
-    td
-    td
-    td
+  each team in teams
+    tr
+      td= team.name
+      td
+      td 9-13
+      td
+      td
+      td
+      td
+      td

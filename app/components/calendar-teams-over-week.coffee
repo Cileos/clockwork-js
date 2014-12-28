@@ -10,5 +10,7 @@ Component = Ember.Component.extend
   decoratedContent: Ember.computed.map 'content', (item, index)->
     Wrap.create content: item
 
+  teams: Ember.computed.mapProperty 'content', 'team'
+
 `export default Component`
 

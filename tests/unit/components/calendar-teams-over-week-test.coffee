@@ -37,8 +37,29 @@ test 'it renders', ->
   equal(content.indexOf('Teams'), 0, 'does not render the right template')
 
 
-test 'it renders items grouped in table (fake)', ->
+test 'it renders items grouped in table', ->
   c = this.subject()
+  blue  = Ember.Object.create name: 'Blue'
+  red   = Ember.Object.create name: 'Red'
+  green = Ember.Object.create name: 'Green'
+  c.set 'content', [
+    Ember.Object.create
+      team: blue
+      startsAt: '2014-12-16T09:00:00.000+01:00'
+      endsAt:   '2014-12-16T12:59:59.999+01:00'
+    Ember.Object.create
+      team:     red
+      startsAt: '2014-12-18T08:00:00.000+01:00'
+      endsAt:   '2014-12-18T11:59:59.999+01:00'
+    Ember.Object.create
+      team:     green
+      startsAt: '2014-12-18T14:00:00.000+01:00'
+      endsAt:   '2014-12-18T17:59:59.999+01:00'
+    Ember.Object.create
+      team:     green
+      startsAt: '2014-12-15T08:00:00.000+01:00'
+      endsAt:   '2014-12-15T11:59:59.999+01:00'
+  ]
   this.append()
 
   matchesTable c.$(), 'tr', 'th,td', """
