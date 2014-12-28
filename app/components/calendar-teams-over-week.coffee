@@ -10,8 +10,10 @@ Component = Ember.Component.extend
   decoratedContent: Ember.computed.map 'content', (item, index)->
     Wrap.create content: item
 
+  ySorting: ['name']
   nonUniqueTeams: Ember.computed.mapProperty 'content', 'team'
-  teams: Ember.computed.uniq 'nonUniqueTeams'
+  unsortedTeams: Ember.computed.uniq 'nonUniqueTeams'
+  teams: Ember.computed.sort 'unsortedTeams', 'ySorting'
 
 `export default Component`
 
