@@ -11,11 +11,8 @@ thead
 tbody
   each row in structure.rows
     tr
-      td= row.team.name
-      td
-      td
-      td
-      td
-      td
-      td
-      td
+      th= row.head
+      each cell in row.cells
+        td: ul
+          each item in cell.items
+            li= item.shortPeriod
