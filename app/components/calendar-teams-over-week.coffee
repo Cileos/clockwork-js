@@ -10,8 +10,39 @@ Wrap = Ember.ObjectProxy.extend
   shortPeriod: Ember.computed 'startHour', 'endHour', ->
     "#{@get('startHour')}-#{@get('endHour')}"
 
-createOrFindCell = (row, column, structure, index)->
+Structure = Ember.Object.extend
+  initRows: (->
+    @set 'rows', Ember.A()
+  ).on('init')
+
+Row = Ember.Object.extend
+  head: null
+  structure: null
+  cells: null # array
+
+  fillCells: (->
+    cells = Ember.A()
+    @set 'cells', cells
+  ).on('init')
+
+Cell = Ember.Object.extend
+  items: null
+  initItems: (->
+    @set 'items', Ember.A()
+  ).on('init')
+
+createOrFindRow = (row, structure, index)->
   rowKey = "row_#{row}" # OPTIMIZE can all objects toString()?
+  unless row = index[rowKey]
+    row = Row.create
+      structure: structure
+      head: row
+    index[rowKey] = row
+    structure.get('rows').pushObject(row)
+
+  row
+
+createOrFindCell = (row, column, structure, index)->
   cellKey = "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
 
   # TODO cases TEST THIS spike
@@ -19,19 +50,12 @@ createOrFindCell = (row, column, structure, index)->
   # 2) row already exists, but no cell
   # 3) row and cell exists
 
-  unless row = index[rowKey]
-    row = Ember.Object.create
-      head: row
-      cells: Ember.A()
-    index[rowKey] = row
-    structure.get('rows').pushObject(row)
-
+  row = createOrFindRow(row, structure, index)
 
   if cell = index[cellKey]
     cell
   else
-    cell = Ember.Object.create
-      items: Ember.A()
+    cell = Cell.create()
     index[cellKey] = cell
     row.get('cells').pushObject(cell)
     cell
@@ -51,9 +75,7 @@ Component = Ember.Component.extend
   structure: Ember.reduceComputed 'decoratedContent',
     'decoratedContent.@each.team',
     'decoratedContent.@each.startsAt',
-    initialValue: ->
-      return Ember.Object.create
-        rows: []
+    initialValue: -> Structure.create()
     initialize: (accu, changeMeta, instanceMeta)->
       instanceMeta.index = {} # faster than ember objects?
 
