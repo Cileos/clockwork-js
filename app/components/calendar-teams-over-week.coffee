@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import tablearized from 'clockwork/utils/tablearized'`
 
 Wrap = Ember.ObjectProxy.extend
   startHour: Ember.computed 'startsAt', ->
@@ -7,79 +8,6 @@ Wrap = Ember.ObjectProxy.extend
     moment( @get('endsAt') ).clone().add(1, 'second').hour()
   shortPeriod: Ember.computed 'startHour', 'endHour', ->
     "#{@get('startHour')}-#{@get('endHour')}"
-
-Structure = Ember.Object.extend
-  index: null
-  initIndex: (->
-    @set 'index', {} # faster than ember objects?
-  ).on('init')
-  xValues: []
-  formattedXValues: Ember.computed.map 'xValues', (mom)->
-    # TODO respect locale for weekday names
-    mom.format('dd')
-
-  rows: []
-  initRows: (->
-    @set 'rows', Ember.A()
-  ).on('init')
-  rowSorting: ['value.name']
-  sortedRows: Ember.computed.sort 'rows', 'rowSorting'
-
-  rowKey: (row)->
-    "row_#{row}" # OPTIMIZE can all objects toString()?
-
-  cellKey: (row, column)->
-    if column.format?
-      column = column.format('dd') # weekday
-    "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
-
-
-  createOrFindRow: (rowValue)->
-    index = @get('index')
-    rowKey = @rowKey(rowValue)
-    unless row = index[rowKey]
-      cells = @get('xValues').map (mom)=>
-        c = Cell.create structure: this, value: mom
-        index[@cellKey(rowValue, mom)] = c
-        c
-      row = Row.create
-        structure: this
-        value: rowValue
-        cells: cells
-      index[rowKey] = row
-      @get('rows').pushObject(row)
-
-    row
-
-  createOrFindCell: (rowValue, columnValue)->
-    index = @get('index')
-    cellKey = @cellKey(rowValue, columnValue)
-    # TODO cases TEST THIS spike
-    # 1) completely new, no row, no cell
-    # 2) row already exists, but no cell
-    # 3) row and cell exists
-
-    if cell = index[cellKey]
-      cell
-    else
-      @createOrFindRow(rowValue)
-      index[cellKey]
-
-
-
-Row = Ember.Object.extend
-  value: null
-  formattedValue: Ember.computed.alias 'value.name'
-  structure: null
-  cells: []
-
-Cell = Ember.Object.extend
-  items: []
-  initItems: (->
-    @set 'items', Ember.A()
-  ).on('init')
-  sorting: ['startsAt']
-  itemsByTime: Ember.computed.sort 'items', 'sorting'
 
 Component = Ember.Component.extend
   tagName: 'table'
@@ -93,22 +21,11 @@ Component = Ember.Component.extend
     monday = moment( @get('monday') ).clone().startOf('isoWeek')
     monday.clone().add(x, 'days') for x in [0,1,2,3,4,5,6]
 
-  structure: Ember.reduceComputed 'decoratedContent',
-    'decoratedContent.@each.team',
-    'decoratedContent.@each.startsAt',
-    initialValue: -> Structure.create()
-    initialize: (accu, changeMeta, _instanceMeta)->
-      accu.set('xValues', @get('xValues')) # OPTIMIZE still static
+  structure: tablearized 'decoratedContent',
+    x: ['startsAt', (v)-> moment(v).format('dd')], # weekday
+    y: ['team', 'name'],
 
-    addedItem: (accu, item, changeMeta, _instanceMeta)->
-      r = item.get('team')
-      c = moment(item.get('startsAt'))
-      cell = accu.createOrFindCell(r, c) # hash lookup, must prepare items array deep in accu
-      cell.get('items').pushObject(item)
-      accu
-    removedItem: (accu, item, changeMeta, _instanceMeta)->
-      console.debug 'removed', item
-      accu
+  # TODO respect locale for weekday names
 
 `export default Component`
 
