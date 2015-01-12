@@ -28,9 +28,14 @@ Structure = Ember.Object.extend
     index = @get('index')
     rowKey = "row_#{rowValue}" # OPTIMIZE can all objects toString()?
     unless row = index[rowKey]
+      cells = @get('xValues').map (mom)->
+        c = Cell.create structure: this, value: mom
+        cellKey = "row_#{rowValue}_col_#{mom}" # OPTIMIZE can all objects toString()?
+        c
       row = Row.create
         structure: this
         value: rowValue
+        cells: cells
       index[rowKey] = row
       @get('rows').pushObject(row)
 
@@ -60,15 +65,7 @@ Structure = Ember.Object.extend
 Row = Ember.Object.extend
   value: null
   structure: null
-  cells: null # array
-
-  initCells: (->
-    cells = Ember.A()
-    @get('structure.xValues').forEach (x)->
-      cell = Cell.create()
-      cells.pushObject cell
-    @set 'cells', cells
-  ).on('init')
+  cells: []
 
 Cell = Ember.Object.extend
   items: null
