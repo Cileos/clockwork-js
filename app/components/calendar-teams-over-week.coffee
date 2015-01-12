@@ -24,6 +24,39 @@ Structure = Ember.Object.extend
     @set 'rows', Ember.A()
   ).on('init')
 
+  createOrFindRow: (rowValue)->
+    index = @get('index')
+    rowKey = "row_#{rowValue}" # OPTIMIZE can all objects toString()?
+    unless row = index[rowKey]
+      row = Row.create
+        structure: this
+        value: rowValue
+      index[rowKey] = row
+      @get('rows').pushObject(row)
+
+    row
+
+  createOrFindCell: (rowValue, columnValue)->
+    index = @get('index')
+    cellKey = "row_#{rowValue}_col_#{columnValue}" # OPTIMIZE can all objects toString()?
+
+    # TODO cases TEST THIS spike
+    # 1) completely new, no row, no cell
+    # 2) row already exists, but no cell
+    # 3) row and cell exists
+
+    row = @createOrFindRow(rowValue)
+
+    if cell = index[cellKey]
+      cell
+    else
+      cell = Cell.create()
+      index[cellKey] = cell
+      row.get('cells').pushObject(cell)
+      cell
+
+
+
 Row = Ember.Object.extend
   value: null
   structure: null
@@ -42,37 +75,6 @@ Cell = Ember.Object.extend
   initItems: (->
     @set 'items', Ember.A()
   ).on('init')
-
-createOrFindRow = (row, structure)->
-  index = structure.get('index')
-  rowKey = "row_#{row}" # OPTIMIZE can all objects toString()?
-  unless row = index[rowKey]
-    row = Row.create
-      structure: structure
-      value: row
-    index[rowKey] = row
-    structure.get('rows').pushObject(row)
-
-  row
-
-createOrFindCell = (row, column, structure)->
-  index = structure.get('index')
-  cellKey = "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
-
-  # TODO cases TEST THIS spike
-  # 1) completely new, no row, no cell
-  # 2) row already exists, but no cell
-  # 3) row and cell exists
-
-  row = createOrFindRow(row, structure)
-
-  if cell = index[cellKey]
-    cell
-  else
-    cell = Cell.create()
-    index[cellKey] = cell
-    row.get('cells').pushObject(cell)
-    cell
 
 
 Component = Ember.Component.extend
@@ -101,7 +103,7 @@ Component = Ember.Component.extend
     addedItem: (accu, item, changeMeta, _instanceMeta)->
       r = item.get('team')
       c = item.get('startDow')
-      cell = createOrFindCell(r, c, accu) # hash lookup, must prepare items array deep in accu
+      cell = accu.createOrFindCell(r, c) # hash lookup, must prepare items array deep in accu
       cell.get('items').pushObject(item)
       accu
     removedItem: (accu, item, changeMeta, _instanceMeta)->
