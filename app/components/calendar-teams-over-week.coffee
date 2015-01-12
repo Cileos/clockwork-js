@@ -64,6 +64,7 @@ Structure = Ember.Object.extend
 
 Row = Ember.Object.extend
   value: null
+  formattedValue: Ember.computed.alias 'value.name'
   structure: null
   cells: []
 

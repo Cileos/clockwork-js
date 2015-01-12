@@ -7,7 +7,7 @@ thead
 tbody
   each row in structure.rows
     tr
-      th= row.head
+      th= row.formattedValue
       each cell in row.cells
         td: ul
           each item in cell.items
