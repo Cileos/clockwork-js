@@ -18,9 +18,12 @@ Structure = Ember.Object.extend
     # TODO respect locale for weekday names
     mom.format('dd')
 
+  rows: []
   initRows: (->
     @set 'rows', Ember.A()
   ).on('init')
+  rowSorting: ['value.name']
+  sortedRows: Ember.computed.sort 'rows', 'rowSorting'
 
   rowKey: (row)->
     "row_#{row}" # OPTIMIZE can all objects toString()?
@@ -88,11 +91,6 @@ Component = Ember.Component.extend
   days: Ember.computed ->
     # count up from monday
     moment("2014-12-15T00:00:00.000").add(x, 'days') for x in [0,1,2,3,4,5,6]
-
-  ySorting: ['name']
-  nonUniqueTeams: Ember.computed.mapProperty 'content', 'team'
-  unsortedTeams: Ember.computed.uniq 'nonUniqueTeams'
-  teams: Ember.computed.sort 'unsortedTeams', 'ySorting'
 
   structure: Ember.reduceComputed 'decoratedContent',
     'decoratedContent.@each.team',

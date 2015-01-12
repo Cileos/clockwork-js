@@ -5,7 +5,7 @@ thead
       th
         = x
 tbody
-  each row in structure.rows
+  each row in structure.sortedRows
     tr
       th= row.formattedValue
       each cell in row.cells
