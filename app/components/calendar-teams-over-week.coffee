@@ -74,7 +74,7 @@ Row = Ember.Object.extend
   cells: []
 
 Cell = Ember.Object.extend
-  items: null
+  items: []
   initItems: (->
     @set 'items', Ember.A()
   ).on('init')
@@ -87,10 +87,11 @@ Component = Ember.Component.extend
   decoratedContent: Ember.computed.map 'content', (item, index)->
     Wrap.create content: item
 
+  monday: moment()
   xValues: Ember.computed.alias 'days'
-  days: Ember.computed ->
-    # count up from monday
-    moment("2014-12-15T00:00:00.000").add(x, 'days') for x in [0,1,2,3,4,5,6]
+  days: Ember.computed 'monday', ->
+    monday = moment( @get('monday') ).clone().startOf('isoWeek')
+    monday.clone().add(x, 'days') for x in [0,1,2,3,4,5,6]
 
   structure: Ember.reduceComputed 'decoratedContent',
     'decoratedContent.@each.team',

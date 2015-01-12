@@ -49,6 +49,7 @@ test 'it renders items grouped in table', ->
   green = Ember.Object.create name: 'Green'
   content = c.get 'content'
   Ember.run ->
+    c.set 'monday', "2014-12-15T00:00:00.000"
     content.pushObject Ember.Object.create
       team: blue
       startsAt: '2014-12-16T09:00:00.000'
