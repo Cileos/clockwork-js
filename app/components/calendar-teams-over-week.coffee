@@ -75,7 +75,8 @@ Cell = Ember.Object.extend
   initItems: (->
     @set 'items', Ember.A()
   ).on('init')
-
+  sorting: ['startsAt']
+  itemsByTime: Ember.computed.sort 'items', 'sorting'
 
 Component = Ember.Component.extend
   tagName: 'table'

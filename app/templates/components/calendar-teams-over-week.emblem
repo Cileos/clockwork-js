@@ -10,5 +10,5 @@ tbody
       th= row.formattedValue
       each cell in row.cells
         td: ul
-          each item in cell.items
+          each item in cell.itemsByTime
             li= item.shortPeriod
