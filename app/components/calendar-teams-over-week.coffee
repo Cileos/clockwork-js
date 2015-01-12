@@ -59,11 +59,8 @@ Structure = Ember.Object.extend
     if cell = index[cellKey]
       cell
     else
-      cell = Cell.create()
-      index[cellKey] = cell
-      row = @createOrFindRow(rowValue)
-      row.get('cells').pushObject(cell)
-      cell
+      @createOrFindRow(rowValue)
+      index[cellKey]
 
 
 
