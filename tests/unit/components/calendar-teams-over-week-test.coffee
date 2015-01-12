@@ -17,9 +17,12 @@ matchesTable = ($ele, line_sel, col_sel, stringy_expected)->
 
   actual = for line in $ele.find(line_sel).toArray()
     for col in $(line).find(col_sel).toArray()
-      $(col).find('li').map (index, li)-> $(li).text().trim()
-                       .toArray()
-                       .join(' ')
+      if $(col).find('li').length > 0
+        $(col).find('li').map (index, li)-> $(li).text().trim()
+                         .toArray()
+                         .join(' ')
+      else
+        $(col).text().trim()
 
   equal actual.length, expected.length, 'number of rows does not match'
   deepEqual actual, expected, 'items do not match'
