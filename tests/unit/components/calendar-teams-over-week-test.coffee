@@ -46,20 +46,20 @@ test 'it renders items grouped in table', ->
   Ember.run ->
     content.pushObject Ember.Object.create
       team: blue
-      startsAt: '2014-12-16T09:00:00.000+01:00'
-      endsAt:   '2014-12-16T12:59:59.999+01:00'
+      startsAt: '2014-12-16T09:00:00.000'
+      endsAt:   '2014-12-16T12:59:59.999'
     content.pushObject Ember.Object.create
       team:     red
-      startsAt: '2014-12-15T08:00:00.000+01:00'
-      endsAt:   '2014-12-15T11:59:59.999+01:00'
+      startsAt: '2014-12-15T08:00:00.000'
+      endsAt:   '2014-12-15T11:59:59.999'
     content.pushObject Ember.Object.create
       team:     green
-      startsAt: '2014-12-18T14:00:00.000+01:00'
-      endsAt:   '2014-12-18T17:59:59.999+01:00'
+      startsAt: '2014-12-18T14:00:00.000'
+      endsAt:   '2014-12-18T17:59:59.999'
     content.pushObject Ember.Object.create
       team:     green
-      startsAt: '2014-12-18T08:00:00.000+01:00'
-      endsAt:   '2014-12-18T11:59:59.999+01:00'
+      startsAt: '2014-12-18T08:00:00.000'
+      endsAt:   '2014-12-18T11:59:59.999'
   this.append()
 
   equal c.get('structure.rows.lastObject.cells.firstObject.items.firstObject.team.name'), 'Red', 'is not grouped'
@@ -79,5 +79,5 @@ test 'it decorates each given content item to calculate needed properties withou
 
   equal c.get('decoratedContent.firstObject.startHour'), 8
 
-  source.set 'startsAt', '2014-12-15T14:00:00.000+01:00'
+  source.set 'startsAt', '2014-12-15T14:00:00.000'
   equal c.get('decoratedContent.firstObject.startHour'), 14

@@ -83,7 +83,7 @@ Component = Ember.Component.extend
   xValues: Ember.computed.alias 'days'
   days: Ember.computed ->
     # count up from monday
-    moment("2014-12-15T00:00:00.000+01:00").add(x, 'days') for x in [0,1,2,3,4,5,6]
+    moment("2014-12-15T00:00:00.000").add(x, 'days') for x in [0,1,2,3,4,5,6]
 
   ySorting: ['name']
   nonUniqueTeams: Ember.computed.mapProperty 'content', 'team'
