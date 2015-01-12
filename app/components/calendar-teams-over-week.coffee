@@ -11,6 +11,12 @@ Wrap = Ember.ObjectProxy.extend
     "#{@get('startHour')}-#{@get('endHour')}"
 
 Structure = Ember.Object.extend
+  index: null
+  initIndex: (->
+    @set 'index', {} # faster than ember objects?
+  ).on('init')
+  xValues: []
+
   initRows: (->
     @set 'rows', Ember.A()
   ).on('init')
@@ -22,7 +28,7 @@ Row = Ember.Object.extend
 
   initCells: (->
     cells = Ember.A()
-    @get('structure.xValues').each (x)->
+    @get('structure.xValues').forEach (x)->
       cell = Cell.create()
       cells.pushObject cell
     @set 'cells', cells
@@ -34,7 +40,8 @@ Cell = Ember.Object.extend
     @set 'items', Ember.A()
   ).on('init')
 
-createOrFindRow = (row, structure, index)->
+createOrFindRow = (row, structure)->
+  index = structure.get('index')
   rowKey = "row_#{row}" # OPTIMIZE can all objects toString()?
   unless row = index[rowKey]
     row = Row.create
@@ -45,7 +52,8 @@ createOrFindRow = (row, structure, index)->
 
   row
 
-createOrFindCell = (row, column, structure, index)->
+createOrFindCell = (row, column, structure)->
+  index = structure.get('index')
   cellKey = "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
 
   # TODO cases TEST THIS spike
@@ -53,7 +61,7 @@ createOrFindCell = (row, column, structure, index)->
   # 2) row already exists, but no cell
   # 3) row and cell exists
 
-  row = createOrFindRow(row, structure, index)
+  row = createOrFindRow(row, structure)
 
   if cell = index[cellKey]
     cell
@@ -82,16 +90,14 @@ Component = Ember.Component.extend
     'decoratedContent.@each.team',
     'decoratedContent.@each.startsAt',
     initialValue: -> Structure.create()
-    initialize: (accu, changeMeta, instanceMeta)->
-      instanceMeta.index = {} # faster than ember objects?
 
-    addedItem: (accu, item, changeMeta, instanceMeta)->
+    addedItem: (accu, item, changeMeta, _instanceMeta)->
       r = item.get('team')
       c = item.get('startDow')
-      cell = createOrFindCell(r, c, accu, instanceMeta.index) # hash lookup, must prepare items array deep in accu
+      cell = createOrFindCell(r, c, accu) # hash lookup, must prepare items array deep in accu
       cell.get('items').pushObject(item)
       accu
-    removedItem: (accu, item, changeMeta, instanceMeta)->
+    removedItem: (accu, item, changeMeta, _instanceMeta)->
       console.debug 'removed', item
       accu
 
