@@ -4,7 +4,7 @@ Wrap = Ember.ObjectProxy.extend
   startHour: Ember.computed 'startsAt', ->
     moment( @get('startsAt') ).hour()
   endHour: Ember.computed 'endsAt', ->
-    moment( @get('endsAt') ).hour()
+    moment( @get('endsAt') ).clone().add(1, 'second').hour()
   startDow: Ember.computed 'startsAt', ->
     moment( @get('startsAt') ).day()
   shortPeriod: Ember.computed 'startHour', 'endHour', ->
