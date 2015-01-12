@@ -16,12 +16,15 @@ Structure = Ember.Object.extend
   ).on('init')
 
 Row = Ember.Object.extend
-  head: null
+  value: null
   structure: null
   cells: null # array
 
-  fillCells: (->
+  initCells: (->
     cells = Ember.A()
+    @get('structure.xValues').each (x)->
+      cell = Cell.create()
+      cells.pushObject cell
     @set 'cells', cells
   ).on('init')
 
@@ -36,7 +39,7 @@ createOrFindRow = (row, structure, index)->
   unless row = index[rowKey]
     row = Row.create
       structure: structure
-      head: row
+      value: row
     index[rowKey] = row
     structure.get('rows').pushObject(row)
 
@@ -66,6 +69,9 @@ Component = Ember.Component.extend
   content: Ember.A()
   decoratedContent: Ember.computed.map 'content', (item, index)->
     Wrap.create content: item
+
+  xValues: Ember.computed.alias 'days'
+  days: null # iterate from monday
 
   ySorting: ['name']
   nonUniqueTeams: Ember.computed.mapProperty 'content', 'team'
