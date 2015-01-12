@@ -1,13 +1,9 @@
 thead
   tr
     th Teams
-    th Mo
-    th Di
-    th Mi
-    th Do
-    th Fr
-    th Sa
-    th So
+    each x in structure.formattedXValues
+      th
+        = x
 tbody
   each row in structure.rows
     tr

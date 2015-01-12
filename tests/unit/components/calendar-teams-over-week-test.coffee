@@ -50,22 +50,22 @@ test 'it renders items grouped in table', ->
       endsAt:   '2014-12-16T12:59:59.999+01:00'
     content.pushObject Ember.Object.create
       team:     red
-      startsAt: '2014-12-18T08:00:00.000+01:00'
-      endsAt:   '2014-12-18T11:59:59.999+01:00'
+      startsAt: '2014-12-15T08:00:00.000+01:00'
+      endsAt:   '2014-12-15T11:59:59.999+01:00'
     content.pushObject Ember.Object.create
       team:     green
       startsAt: '2014-12-18T14:00:00.000+01:00'
       endsAt:   '2014-12-18T17:59:59.999+01:00'
     content.pushObject Ember.Object.create
       team:     green
-      startsAt: '2014-12-15T08:00:00.000+01:00'
-      endsAt:   '2014-12-15T11:59:59.999+01:00'
+      startsAt: '2014-12-18T08:00:00.000+01:00'
+      endsAt:   '2014-12-18T11:59:59.999+01:00'
   this.append()
 
   equal c.get('structure.rows.lastObject.cells.firstObject.items.firstObject.team.name'), 'Red', 'is not grouped'
 
   matchesTable c.$(), 'tr', 'th,td', """
-    | Teams | Mo   | Di   | Mi | Do         | Fr | Sa | So |
+    | Teams | Mo   | Tu   | We | Th         | Fr | Sa | Su |
     | Blue  |      | 9-13 |    |            |    |    |    |
     | Green |      |      |    | 8-12 14-18 |    |    |    |
     | Red   | 8-12 |      |    |            |    |    |    |

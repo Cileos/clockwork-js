@@ -16,6 +16,9 @@ Structure = Ember.Object.extend
     @set 'index', {} # faster than ember objects?
   ).on('init')
   xValues: []
+  formattedXValues: Ember.computed.map 'xValues', (mom)->
+    # TODO respect locale for weekday names
+    mom.format('dd')
 
   initRows: (->
     @set 'rows', Ember.A()
@@ -79,7 +82,9 @@ Component = Ember.Component.extend
     Wrap.create content: item
 
   xValues: Ember.computed.alias 'days'
-  days: null # iterate from monday
+  days: Ember.computed ->
+    # count up from monday
+    moment("2014-12-15T00:00:00.000+01:00").add(x, 'days') for x in [0,1,2,3,4,5,6]
 
   ySorting: ['name']
   nonUniqueTeams: Ember.computed.mapProperty 'content', 'team'
@@ -90,6 +95,8 @@ Component = Ember.Component.extend
     'decoratedContent.@each.team',
     'decoratedContent.@each.startsAt',
     initialValue: -> Structure.create()
+    initialize: (accu, changeMeta, _instanceMeta)->
+      accu.set('xValues', @get('xValues')) # OPTIMIZE still static
 
     addedItem: (accu, item, changeMeta, _instanceMeta)->
       r = item.get('team')
