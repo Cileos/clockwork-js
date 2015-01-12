@@ -5,8 +5,6 @@ Wrap = Ember.ObjectProxy.extend
     moment( @get('startsAt') ).hour()
   endHour: Ember.computed 'endsAt', ->
     moment( @get('endsAt') ).clone().add(1, 'second').hour()
-  startDow: Ember.computed 'startsAt', ->
-    moment( @get('startsAt') ).day()
   shortPeriod: Ember.computed 'startHour', 'endHour', ->
     "#{@get('startHour')}-#{@get('endHour')}"
 
@@ -24,13 +22,22 @@ Structure = Ember.Object.extend
     @set 'rows', Ember.A()
   ).on('init')
 
+  rowKey: (row)->
+    "row_#{row}" # OPTIMIZE can all objects toString()?
+
+  cellKey: (row, column)->
+    if column.format?
+      column = column.format('dd') # weekday
+    "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
+
+
   createOrFindRow: (rowValue)->
     index = @get('index')
-    rowKey = "row_#{rowValue}" # OPTIMIZE can all objects toString()?
+    rowKey = @rowKey(rowValue)
     unless row = index[rowKey]
-      cells = @get('xValues').map (mom)->
+      cells = @get('xValues').map (mom)=>
         c = Cell.create structure: this, value: mom
-        cellKey = "row_#{rowValue}_col_#{mom}" # OPTIMIZE can all objects toString()?
+        index[@cellKey(rowValue, mom)] = c
         c
       row = Row.create
         structure: this
@@ -43,20 +50,18 @@ Structure = Ember.Object.extend
 
   createOrFindCell: (rowValue, columnValue)->
     index = @get('index')
-    cellKey = "row_#{rowValue}_col_#{columnValue}" # OPTIMIZE can all objects toString()?
-
+    cellKey = @cellKey(rowValue, columnValue)
     # TODO cases TEST THIS spike
     # 1) completely new, no row, no cell
     # 2) row already exists, but no cell
     # 3) row and cell exists
-
-    row = @createOrFindRow(rowValue)
 
     if cell = index[cellKey]
       cell
     else
       cell = Cell.create()
       index[cellKey] = cell
+      row = @createOrFindRow(rowValue)
       row.get('cells').pushObject(cell)
       cell
 
@@ -100,7 +105,7 @@ Component = Ember.Component.extend
 
     addedItem: (accu, item, changeMeta, _instanceMeta)->
       r = item.get('team')
-      c = item.get('startDow')
+      c = moment(item.get('startsAt'))
       cell = accu.createOrFindCell(r, c) # hash lookup, must prepare items array deep in accu
       cell.get('items').pushObject(item)
       accu

@@ -17,7 +17,9 @@ matchesTable = ($ele, line_sel, col_sel, stringy_expected)->
 
   actual = for line in $ele.find(line_sel).toArray()
     for col in $(line).find(col_sel).toArray()
-      $(col).text().trim()
+      $(col).find('li').map (index, li)-> $(li).text().trim()
+                       .toArray()
+                       .join(' ')
 
   equal actual.length, expected.length, 'number of rows does not match'
   deepEqual actual, expected, 'items do not match'
@@ -62,6 +64,7 @@ test 'it renders items grouped in table', ->
       endsAt:   '2014-12-18T11:59:59.999'
   this.append()
 
+  #equal Object.keys(c.get('structure.index')), 'inspect this'
   equal c.get('structure.rows.lastObject.cells.firstObject.items.firstObject.team.name'), 'Red', 'is not grouped'
 
   matchesTable c.$(), 'tr', 'th,td', """
