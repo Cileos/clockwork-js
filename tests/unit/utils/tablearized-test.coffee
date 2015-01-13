@@ -2,7 +2,8 @@
 
 module 'tablearized'
 
-blueTeam = Ember.Object.create name: 'Blue'
+obj = Ember.Object.create
+blueTeam = obj name: 'Blue'
 
 # Replace this with your real tests.
 test 'it works', ->
@@ -25,7 +26,7 @@ test 'it puts object into its cell', ->
   list = thing.get('content')
 
   Ember.run ->
-    list.pushObject Ember.Object.create
+    list.pushObject obj
       team: blueTeam
       startsAt: '2014-12-15T08:00:00.000'
       name: 'TheOne'
