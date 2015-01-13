@@ -29,6 +29,8 @@ tablearized = (dependentKey, opts)->
     ).on('init')
     xValues: Ember.computed scopeStartProperty, ->
       start = moment( @get(scopeStartProperty) ).clone().startOf(scopeRange)
+      unless start.isValid()
+        throw "cannot build headers without a start, please set `#{scopeStartProperty}`"
       start.clone().add(x, scopeStepWidth) for x in [0..scopeStepCount-1]
     formattedXValues: Ember.computed.map 'xValues', xFormatter
 

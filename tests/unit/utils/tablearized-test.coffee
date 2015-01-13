@@ -36,7 +36,16 @@ test 'it puts object into its cell', ->
     'TheOne', 'incorrect object'
 
 
-  #test 'it complains when no monday was set before pushing objects'
+test 'it complains when no monday was set before pushing objects', ->
+  Ember.run ->
+    thing.set 'table.beginningOfWeek', null
+    throws ->
+      list.pushObject obj
+        team: blueTeam
+        startsAt: '2014-12-15T08:00:00.000'
+    , /please set .*beginningOfWeek/
+    , 'ignores undefined beginning of week'
+
   #test 'it puts multiple objects into the same cell when they match', ->
   #test 'it moves object to new cell when x property changes', ->
   #test 'it moves object to new cell when y property changes', ->
