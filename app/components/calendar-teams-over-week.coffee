@@ -16,11 +16,6 @@ Component = Ember.Component.extend
     Wrap.create content: item
 
   monday: moment()
-  xValues: Ember.computed.alias 'days'
-  days: Ember.computed 'monday', ->
-    monday = moment( @get('monday') ).clone().startOf('isoWeek')
-    monday.clone().add(x, 'days') for x in [0,1,2,3,4,5,6]
-
   structure: tablearized 'decoratedContent',
     x: ['startsAt', (v)-> moment(v).format('dd')], # weekday
     y: ['team', 'name'],

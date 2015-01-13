@@ -2,17 +2,34 @@
 
 tablearized = (dependentKey, opts)->
 
+  # The Property of listed objects used for columns
   xProperty  = opts.x[0]
+  # A function allowing to format the column headers and values to group by.
+  # Should return distinct values for each column (d'oh)
   xFormatter = opts.x[1]
+  # The Property of listed objects used for rows (for example 'team')
   yProperty  = opts.y[0]
+  # The Property of the row objects (for example 'name')
   yFormatter = opts.y[1]
+
+  # Property of the owning object to define the range to show
+  scopeStartProperty = opts.scope?[0] or 'monday'
+  # The range which is shown. uses moment.js `startOf()` and similars
+  scopeRange         = opts.scope?[1] or 'isoWeek'
+  # The number of steps respect
+  scopeStepCount     = opts.scope?[2] or 7
+  # The size of each step, uses moment.js `add()` with scopeStepCount
+  scopeStepWidth     = opts.scope?[3] or 'days'
+
 
   Structure = Ember.Object.extend
     index: null
     initIndex: (->
       @set 'index', {} # faster than ember objects?
     ).on('init')
-    xValues: []
+    xValues: Ember.computed scopeStartProperty, ->
+      start = moment( @get(scopeStartProperty) ).clone().startOf(scopeRange)
+      start.clone().add(x, scopeStepWidth) for x in [0..scopeStepCount-1]
     formattedXValues: Ember.computed.map 'xValues', xFormatter
 
     rows: []
@@ -35,7 +52,10 @@ tablearized = (dependentKey, opts)->
       index = @get('index')
       rowKey = @rowKey(rowValue)
       unless row = index[rowKey]
-        cells = @get('xValues').map (mom)=>
+        headers = @get('xValues')
+        if !headers? or headers.length < scopeStepCount
+          throw "could not calculate headers, must set #{scopeStartProperty} or point to other property with `scopeStart: '2012-05-13'`"
+        cells = headers.map (mom)=>
           c = Cell.create structure: this, value: mom
           index[@cellKey(rowValue, mom)] = c
           c
@@ -80,8 +100,8 @@ tablearized = (dependentKey, opts)->
   options =
     initialValue: -> Structure.create()
     initialize: (accu, changeMeta, _instanceMeta)->
-      # FIXME make this a binding or similar non-static
-      accu.set('xValues', @get('xValues'))
+      # FIXME make this a binding or similar non-static and handle re-building of structure
+      accu.set(scopeStartProperty, @get(scopeStartProperty))
 
     addedItem: (accu, item, changeMeta, _instanceMeta)->
       r = item.get(yProperty)
@@ -95,6 +115,7 @@ tablearized = (dependentKey, opts)->
       accu
 
   Ember.reduceComputed dependentKey,
+    scopeStartProperty,
     "#{dependentKey}.@each.#{yProperty}",
     "#{dependentKey}.@each.#{xProperty}",
     options
