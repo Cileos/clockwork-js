@@ -1,30 +1,24 @@
 `import tablearized from 'clockwork/utils/tablearized'`
 
-module 'tablearized'
+Thing = thing = list = null
 
-obj = Ember.Object.create
+module 'tablearized',
+  setup: ->
+    Thing = Ember.Object.extend
+      beginningOfWeek: '2014-12-15'
+      content: []
+      table: tablearized 'content',
+        scope: ['beginningOfWeek', 'isoWeek', 7, 'days']
+        x: ['startsAt', (v)-> moment(v).format('dd')]
+        y: ['team', 'name'],
+    thing = Thing.create(content: [])
+    list = thing.get('content')
+
+obj = (x)-> Ember.Object.create(x)
 blueTeam = obj name: 'Blue'
 
-# Replace this with your real tests.
-test 'it works', ->
-  result = tablearized 'content',
-    x: ['startsAt', (v)-> moment(v).format('dd')], # weekday
-    y: ['team', 'name'],
-  ok result
-
-  # rest tested in integration with component for now
 
 test 'it puts object into its cell', ->
-  Thing = Ember.Object.extend
-    beginningOfWeek: '2014-12-15'
-    content: []
-    table: tablearized 'content',
-      scope: ['beginningOfWeek', 'isoWeek', 7, 'days']
-      x: ['startsAt', (v)-> moment(v).format('dd')]
-      y: ['team', 'name'],
-  thing = Thing.create(content: [])
-  list = thing.get('content')
-
   Ember.run ->
     list.pushObject obj
       team: blueTeam
