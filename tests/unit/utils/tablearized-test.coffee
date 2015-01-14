@@ -134,8 +134,37 @@ test 'it removes object from cell when it is removed from original list', ->
   equal cellsOfFirstRow.get('lastObject.itemsByTime.length'),
     0, 'cell should be empty after removal'
 
+test 'it leaves out objects not in scope', ->
+  # first, a valid one so we have a row
+  o = obj
+    team: blueTeam
+    startsAt: '2014-12-15T08:00:00.000'
+    name: 'TheDummy'
+  Ember.run ->
+    list.pushObject o
+    list.pushObject obj
+      team: blueTeam
+      startsAt: '2014-12-22T08:00:00.000'
+      name: 'FUTURE'
+    # starts on sunday of LAST week
+    list.pushObject obj
+      team: blueTeam
+      startsAt: '2014-12-14T09:00:00.000'
+      name: 'PAST'
+
+  equal thing.get('table.sortedRows.length'),
+    1, 'one row must exist (for TheDummy)'
+
+  Ember.run -> list.removeObject(o)
+
+  # assuming empty row is not removed
+  equal thing.get('table.sortedRows.length'),
+    1, 'removal of TheDummy did not leave an empty table'
+  thing.get('table.sortedRows.firstObject.cells').forEach (cell, i)->
+    equal cell.get('itemsByTime.length'), 0, "cell #{i} must be empty"
+
+
   #test '??? it removes rows with it contains no more objects'
-  #test 'it leaves out objects not in scope'
   #test 'it rebuilds structure if scope changes'
   #test 'it ignores objects with bad properties (malformed startsAt)'
 

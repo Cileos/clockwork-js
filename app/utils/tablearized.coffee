@@ -52,8 +52,8 @@ tablearized = (dependentKey, opts)->
 
     addItemAt: (item, column, row)->
       console?.debug 'addItemAt', column.format('YYYY-MM-DD'), row.get('name')
-      cell = @createOrFindCell(row, column)
-      cell.get('items').pushObject(item)
+      if cell = @createOrFindCell(row, column)
+        cell.get('items').pushObject(item)
 
     removeItemAt: (item, column, row)->
       console?.debug 'removeItemAt', column.format('YYYY-MM-DD'), row.get('name')
@@ -82,6 +82,7 @@ tablearized = (dependentKey, opts)->
       row
 
     createOrFindCell: (rowValue, columnValue)->
+      return unless @columnIsValid(columnValue)
       index = @get('index')
       cellKey = @cellKey(rowValue, columnValue)
       # TODO cases TEST THIS spike
@@ -94,6 +95,13 @@ tablearized = (dependentKey, opts)->
       else
         @createOrFindRow(rowValue)
         index[cellKey]
+
+    columnIsValid: (columnValue)->
+      mine = @get('xValues')
+      min = mine.get('firstObject')
+      max = mine.get('lastObject').clone().endOf(scopeRange)
+      columnValue.isBefore(max) and columnValue.isAfter(min)
+
 
   Row = Ember.Object.extend
     value: null
