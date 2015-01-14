@@ -119,7 +119,21 @@ test 'it moves object to new cell when y property changes', ->
   equal cellsOfLastRow.get('firstObject.itemsByTime.length'),
     0, 'target cell should be empty'
 
-  #test 'it removes object from cell when it is destroyed', ->
+test 'it removes object from cell when it is removed from original list', ->
+  o = obj
+    team: blueTeam
+    startsAt: '2014-12-21T08:00:00.000'
+    name: 'TheOne'
+  Ember.run -> list.pushObject o
+
+  cellsOfFirstRow = thing.get('table.sortedRows.firstObject.cells')
+  equal cellsOfFirstRow.get('lastObject.itemsByTime.length'),
+    1, 'cell should not be empty before removal'
+
+  Ember.run -> list.removeObject o
+  equal cellsOfFirstRow.get('lastObject.itemsByTime.length'),
+    0, 'cell should be empty after removal'
+
   #test '??? it removes rows with it contains no more objects'
   #test 'it leaves out objects not in scope'
   #test 'it rebuilds structure if scope changes'

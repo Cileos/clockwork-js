@@ -128,8 +128,8 @@ tablearized = (dependentKey, opts)->
       console?.debug 'removed', item, changeMeta
       prev = changeMeta.previousValues
       accu.removeItemAt item,
-        moment( prev[xProperty] || item.get(xProperty) ),
-        prev[yProperty] || item.get(yProperty)
+        moment( prev?[xProperty] || item.get(xProperty) ),
+        prev?[yProperty] || item.get(yProperty)
       accu
 
   Ember.reduceComputed dependentKey,
