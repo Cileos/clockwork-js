@@ -163,8 +163,18 @@ test 'it leaves out objects not in scope', ->
   thing.get('table.sortedRows.firstObject.cells').forEach (cell, i)->
     equal cell.get('itemsByTime.length'), 0, "cell #{i} must be empty"
 
+test 'it ignores objects with bad properties (malformed startsAt)', ->
+  # first, a valid one so we have a row
+  o = obj
+    team: blueTeam
+    startsAt: 'gibberish'
+    name: 'TheIiot'
+  Ember.run ->
+    list.pushObject o
+
+  equal thing.get('table.sortedRows.length'),
+    0, 'no row should be created for malformed date'
 
   #test '??? it removes rows with it contains no more objects'
   #test 'it rebuilds structure if scope changes'
-  #test 'it ignores objects with bad properties (malformed startsAt)'
 
