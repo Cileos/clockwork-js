@@ -70,7 +70,29 @@ test 'it puts multiple objects into the same cell when they match', ->
   equal rows.get('firstObject.cells.lastObject.itemsByTime.lastObject.name'),
     'TheOther', 'TheOther should be last'
 
-  #test 'it moves object to new cell when x property changes', ->
+test 'it moves object to new cell when x property changes', ->
+  # move from sunday (21.12.) to monday
+  o = obj
+    team: blueTeam
+    startsAt: '2014-12-21T08:00:00.000'
+    name: 'TheOne'
+  Ember.run -> list.pushObject o
+  cellsOfFirstRow = thing.get('table.sortedRows.firstObject.cells')
+
+  equal cellsOfFirstRow.get('lastObject.itemsByTime.length'),
+    1, 'source cell should not be empty'
+  equal cellsOfFirstRow.get('firstObject.itemsByTime.length'),
+    0, 'target cell should be empty'
+
+  Ember.run -> o.set 'startsAt', '2014-12-15T08:00'
+
+  equal cellsOfFirstRow.get('lastObject.itemsByTime.length'),
+    0, 'source cell still contains item'
+  equal cellsOfFirstRow.get('firstObject.itemsByTime.length'),
+    1, 'target cell should contain one object'
+  equal cellsOfFirstRow.get('firstObject.itemsByTime.firstObject.name'),
+    'TheOne', 'target cell should contain the changed object'
+
   #test 'it moves object to new cell when y property changes', ->
   #test 'it removes object from cell when it is destroyed', ->
   #test '??? it removes rows with it contains no more objects'

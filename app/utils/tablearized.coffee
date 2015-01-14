@@ -50,6 +50,17 @@ tablearized = (dependentKey, opts)->
       "row_#{row}_col_#{column}" # OPTIMIZE can all objects toString()?
 
 
+    addItemAt: (item, column, row)->
+      console?.debug 'addItemAt', column.format('YYYY-MM-DD'), row.get('name')
+      cell = @createOrFindCell(row, column)
+      cell.get('items').pushObject(item)
+
+    removeItemAt: (item, column, row)->
+      console?.debug 'removeItemAt', column.format('YYYY-MM-DD'), row.get('name')
+      cell = @createOrFindCell(row, column)
+      cell.get('items').removeObject(item)
+
+
     createOrFindRow: (rowValue)->
       index = @get('index')
       rowKey = @rowKey(rowValue)
@@ -106,14 +117,19 @@ tablearized = (dependentKey, opts)->
       accu.set(scopeStartProperty, @get(scopeStartProperty))
 
     addedItem: (accu, item, changeMeta, _instanceMeta)->
-      r = item.get(yProperty)
       # TODO deal more eloquent with time components
-      c = moment(item.get(xProperty))
-      cell = accu.createOrFindCell(r, c) # hash lookup, must prepare items array deep in accu
-      cell.get('items').pushObject(item)
+      accu.addItemAt item,
+        moment( item.get(xProperty) ),
+        item.get(yProperty)
       accu
+
+    # called by ember when an item is removed or changed
     removedItem: (accu, item, changeMeta, _instanceMeta)->
-      console.debug 'removed', item
+      console?.debug 'removed', item, changeMeta
+      prev = changeMeta.previousValues
+      accu.removeItemAt item,
+        moment( prev[xProperty] || item.get(xProperty) ),
+        prev[yProperty] || item.get(yProperty)
       accu
 
   Ember.reduceComputed dependentKey,
