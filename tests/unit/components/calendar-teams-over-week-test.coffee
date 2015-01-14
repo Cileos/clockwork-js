@@ -68,12 +68,6 @@ test 'it renders items grouped in table', ->
       endsAt:   '2014-12-18T11:59:59.999'
   this.append()
 
-  #equal Object.keys(c.get('structure.index')), 'inspect this'
-  equal c.get('structure.sortedRows.length'), 3
-  equal c.get('structure.sortedRows.lastObject.cells.length'), 7
-  equal c.get('structure.sortedRows.lastObject.cells.firstObject.itemsByTime.length'), 1
-  equal c.get('structure.sortedRows.lastObject.cells.firstObject.itemsByTime.firstObject.team.name'), 'Red', 'is not grouped'
-
   matchesTable c.$(), 'tr', 'th,td', """
     | Teams | Mo   | Tu   | We | Th         | Fr | Sa | Su |
     | Blue  |      | 9-13 |    |            |    |    |    |
