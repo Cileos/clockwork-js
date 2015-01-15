@@ -1,5 +1,8 @@
 h2 Hello $user
 p here is your upcoming week
 
+pagination-base action="previousWeek" | <
+pagination-base action="nextWeek" | >
+
 calendar-teams-over-week content=upcomingSchedulings monday=currentMonday
 = outlet
