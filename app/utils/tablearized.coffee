@@ -51,7 +51,6 @@ tablearized = (dependentKey, opts)->
 
 
     addItemAt: (item, column, row)->
-      console?.debug 'addItemAt', column.format('YYYY-MM-DD'), row.get('name')
       if cell = @createOrFindCell(row, column)
         cell.get('items').pushObject(item)
 
