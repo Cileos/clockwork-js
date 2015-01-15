@@ -56,8 +56,8 @@ tablearized = (dependentKey, opts)->
 
     removeItemAt: (item, column, row)->
       console?.debug 'removeItemAt', column.format('YYYY-MM-DD'), row.get('name')
-      cell = @createOrFindCell(row, column)
-      cell.get('items').removeObject(item)
+      if cell = @createOrFindCell(row, column)
+        cell.get('items').removeObject(item)
 
 
     createOrFindRow: (rowValue)->
