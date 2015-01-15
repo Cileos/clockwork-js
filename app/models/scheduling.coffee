@@ -2,8 +2,8 @@
 
 Scheduling = DS.Model.extend {
   team: DS.belongsTo 'team'
-  startsAt: DS.attr('moment')
-  endsAt: DS.attr('moment')
+  startsAt: DS.attr('string')
+  endsAt: DS.attr('string')
   allDay: DS.attr 'boolean'
   employee: DS.belongsTo 'employee'
 }
