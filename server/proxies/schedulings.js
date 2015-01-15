@@ -1,4 +1,4 @@
-var proxyPath = '/schedulings';
+var proxyPath = '/api';
 
 module.exports = function(app) {
   // For options, see:
@@ -9,6 +9,6 @@ module.exports = function(app) {
   app.use(proxyPath, function(req, res, next){
     // include root path in proxied request
     req.url = path.join(proxyPath, req.url);
-    proxy.web(req, res, { target: 'http://localhost:3000/ember/schedulings' });
+    proxy.web(req, res, { target: 'http://localhost:3000' });
   });
 };
