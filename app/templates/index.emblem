@@ -1,5 +1,6 @@
 h2 Hello $user
-p here is your upcoming week
+p
+ | here is your upcoming week, beginning on {{monday}}
 
 pagination-base action="previousWeek" | <
 pagination-base action="nextWeek" | >

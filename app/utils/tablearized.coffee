@@ -55,7 +55,6 @@ tablearized = (dependentKey, opts)->
         cell.get('items').pushObject(item)
 
     removeItemAt: (item, column, row)->
-      console?.debug 'removeItemAt', column.format('YYYY-MM-DD'), row.get('name')
       if cell = @createOrFindCell(row, column)
         cell.get('items').removeObject(item)
 
@@ -132,7 +131,6 @@ tablearized = (dependentKey, opts)->
 
     # called by ember when an item is removed or changed
     removedItem: (accu, item, changeMeta, _instanceMeta)->
-      console?.debug 'removed', item, changeMeta
       prev = changeMeta.previousValues
       accu.removeItemAt item,
         moment( prev?[xProperty] || item.get(xProperty) ),

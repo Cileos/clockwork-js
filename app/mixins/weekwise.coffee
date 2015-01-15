@@ -4,10 +4,10 @@ now = moment()
 
 WeekwiseMixin = Ember.Mixin.create
   queryParams: ['year', 'week']
-  year: now.year()
-  week: now.isoWeek()
+  year: moment().year()
+  week: moment().isoWeek()
   monday: Ember.computed 'year', 'week', ->
-    moment("#{@get 'year'}-W#{@get 'week'}-1")
+    moment().year(@get 'year').isoWeek(@get 'week').isoWeekday(1).startOf('day')
 
   actions:
     previousWeek: (e) ->
@@ -17,7 +17,7 @@ WeekwiseMixin = Ember.Mixin.create
       @transitionToWeek( @get('monday').clone().add(1, 'week') )
 
   transitionToWeek: (target)->
-    target = target.startOf('week')
+    target = target.startOf('isoWeek')
     @transitionToRoute queryParams:
       year: target.year()
       week: target.isoWeek()
