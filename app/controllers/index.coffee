@@ -3,6 +3,6 @@
 
 IndexController = Ember.Controller.extend WeekwiseMixin,
   upcomingSchedulings: Ember.computed 'monday', ->
-    @get('store').findAll 'scheduling'
+    @get('store').findQuery 'scheduling', cwyear: @get('year'), week: @get('week')
 
 `export default IndexController`

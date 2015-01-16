@@ -5,5 +5,5 @@ p
 pagination-base action="previousWeek" | <
 pagination-base action="nextWeek" | >
 
-calendar-teams-over-week content=upcomingSchedulings monday=currentMonday
+calendar-teams-over-week content=upcomingSchedulings monday=monday
 = outlet
