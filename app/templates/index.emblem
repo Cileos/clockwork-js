@@ -1,9 +1,11 @@
-h2 Hello $user
-p
- | here is your upcoming week, beginning on {{monday}}
+section.two-columns.has-calendar role="content"
+  header.masterhead
+    h2.calendar-caption your upcoming week
+    nav role="toolbar"
+      .button-group
+        pagination-base action="previousWeek" | <
+        pagination-base action="nextWeek" | >
 
-pagination-base action="previousWeek" | <
-pagination-base action="nextWeek" | >
+  calendar-teams-over-week content=upcomingSchedulings monday=monday classNames="calendar"
 
-calendar-teams-over-week content=upcomingSchedulings monday=monday
-= outlet
+  = outlet

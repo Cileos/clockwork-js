@@ -11,4 +11,5 @@ tbody
       each cell in row.cells
         td: ul
           each item in cell.itemsByTime
-            li= item.shortPeriod
+            li.scheduling
+              abbr.work_time title=item.shortPeriod: span= item.shortPeriod
