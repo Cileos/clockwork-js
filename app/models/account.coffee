@@ -5,4 +5,3 @@ Account = DS.Model.extend {
 }
 
 `export default Account`
-

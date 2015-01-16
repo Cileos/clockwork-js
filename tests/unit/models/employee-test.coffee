@@ -2,7 +2,9 @@
 
 moduleForModel 'employee', 'Employee', {
   # Specify the other units that are required for this test.
-  needs: []
+  needs: [
+    'model:account'
+  ]
 }
 
 test 'it exists', ->
