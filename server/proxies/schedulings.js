@@ -11,4 +11,9 @@ module.exports = function(app) {
     req.url = path.join(proxyPath, req.url);
     proxy.web(req, res, { target: 'http://localhost:3000' });
   });
+
+  app.use('/assets/application.css', function(req, res, next) {
+    req.url = '/assets/application.css';
+    proxy.web(req, res, { target: 'http://localhost:3000' });
+  });
 };
