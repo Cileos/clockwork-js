@@ -1,0 +1,3 @@
+abbr.work_time title=content.shortPeriod
+  span= content.shortPeriod
+

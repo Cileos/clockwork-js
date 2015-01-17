@@ -1,6 +1,6 @@
 `import { test, moduleForComponent } from 'ember-qunit'`
 
-moduleForComponent 'schedulables-list', 'SchedulablesListComponent', {
+moduleForComponent 'schedulable-in-list', 'SchedulableInListComponent', {
   # specify the other units that are required for this test
   # needs: ['component:foo', 'helper:bar']
 }
@@ -15,5 +15,3 @@ test 'it renders', ->
   # appends the component to the page
   @append()
   equal component._state, 'inDOM'
-
-# TODO it adds css class to colorize by team
