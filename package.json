@@ -1,7 +1,7 @@
 {
   "name": "clockwork",
   "version": "0.0.0",
-  "description": "Small description for clockwork goes here",
+  "description": "Third rewrite of clockwork, this time as single-page Ember app",
   "private": true,
   "directories": {
     "doc": "doc",
