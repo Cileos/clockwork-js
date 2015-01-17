@@ -1,8 +1,1 @@
-header role="banner"
-  h1.logo
-    a#logo.brand href="/"
-.where-and-who-am-i
-  .current-account-and-organization Where am I?
-  .username Who am I?
-
 = outlet
