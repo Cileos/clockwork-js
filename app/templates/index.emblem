@@ -9,3 +9,5 @@ section.two-columns.has-calendar role="content"
   calendar-teams-over-week content=upcomingSchedulings monday=monday classNames="calendar"
 
   = outlet
+
+team-colors-css content=loadedTeams
