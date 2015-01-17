@@ -6,7 +6,7 @@
 
 moduleForComponent('calendar-teams-over-week', 'CalendarTeamsOverWeekComponent', {
   # specify the other units that are required for this test
-  # needs: ['component:foo', 'helper:bar']
+  needs: ['component:schedulables-list']
 })
 
 matchesTable = ($ele, line_sel, col_sel, stringy_expected)->

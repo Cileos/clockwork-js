@@ -9,7 +9,5 @@ tbody
     tr
       th= row.formattedValue
       each cell in row.cells
-        td: ul
-          each item in cell.itemsByTime
-            li.scheduling
-              abbr.work_time title=item.shortPeriod: span= item.shortPeriod
+        td
+          schedulables-list content=cell.itemsByTime

@@ -1,0 +1,4 @@
+ul
+  each item in content
+    li.scheduling
+      abbr.work_time title=item.shortPeriod: span= item.shortPeriod
