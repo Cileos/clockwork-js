@@ -8,6 +8,6 @@ IndexController = Ember.Controller.extend WeekwiseMixin,
   # Only contains the teams loaded on the side, for
   # example by being included in /schedulings
   loadedTeams: Ember.computed 'store', ->
-    @get('store').filter 'team', -> true
+    @get('store').all 'team'
 
 `export default IndexController`
