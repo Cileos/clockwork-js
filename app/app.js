@@ -88,6 +88,8 @@ export default App;
 *      * so there should be a SchedulingsEditRoute that is used several times. can we specify the route class?
 *         * nope. so we just stub-inherit.
 *         * we just use @resource instead of route to reuse the route and everything else
+*      * how to give extra options to the modal (buttons)
+*        => through the fixed SchedulingsEditController
 *
 *  GOOGLE HowTo cursor? where?
 *    * queryParams for state (or URI) with replaceRoute
