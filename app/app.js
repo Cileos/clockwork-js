@@ -67,10 +67,11 @@ export default App;
 *     * fetching&filtering would be easier to put into components (may be Pro)
 *
 *
-*  GOOGLE How do queryParams behave to same-named route params?
+*  How do queryParams behave to same-named route params?
+*  * completely separate
 *
 *
-*  GOOGLE Howto Modal?
+*  Howto Modal? [ worth a try ]
 *  * details/edit scheduling
 *  * read/write comments
 *  * show/edit milestone
@@ -92,11 +93,10 @@ export default App;
 *        => through the fixed SchedulingsEditController
 *
 *  GOOGLE HowTo cursor? where?
-*    * queryParams for state (or URI) with replaceRoute
-*    * must go through DOM???
-*    * or traverse through tablearized (must be loaded)
-*    * aremovements actions?
-*    * where to "store"? global/in any controller?
+*    * queryParams for state? (or URI) with replaceRoute
+*    * have a selectedItem in CalendarComponent
+*    => listen to keypresses (in component) and traverse through tablearized
+*    does not change the route for now
 *
 *  Flicking through calendar from the header?
 *  Naah, then cursor must be allowed in there (is this bad?)
