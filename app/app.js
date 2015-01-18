@@ -33,7 +33,7 @@ export default App;
 * etc
 *
 * in any of the above calendar scopes
-* /month/:year/:month/edit/:scheduling_id that somehow uses EditSchedulingRoute
+* /month/:year/:month/schedulings/:scheduling_id/edit that uses SchedulingsEditRoute when @resource('schedulings', ->..) is used
 * < ModalRoute to open a modal. We can link-to 'edit', scheduling to this and return to parent later
 *
 * How should we implement the time-scoping params (:year, :week, :month, :cwyear)?
@@ -85,8 +85,9 @@ export default App;
 *      * knows the view/outlet that it was rendered/disconnected to run the extra JS to show/hide?
 *        * didInsertElement, willRemoveElement
 *      * we are in route. so no problem to transitionTo $parentRoute #hope when `save` action is called
-*      * so there should be a EditSchedulingRoute that is used several times. can we specify the route class?
+*      * so there should be a SchedulingsEditRoute that is used several times. can we specify the route class?
 *         * nope. so we just stub-inherit.
+*         * we just use @resource instead of route to reuse the route and everything else
 *
 *  GOOGLE HowTo cursor? where?
 *    * queryParams for state (or URI) with replaceRoute
