@@ -20,6 +20,10 @@ You will need the following things properly installed on your computer.
 * `npm install`
 * `bower install`
 
+if "moment.js" cannot be found, run
+
+* `node_modules/ember-cli/bin/ember g ember-moment`
+
 ## Running / Development
 
 * `ember server`
