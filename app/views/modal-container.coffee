@@ -19,8 +19,6 @@ ModalContainerView = Ember.ContainerView.extend
       @openModal()
     else
       @closeModal()
-
-    console?.debug "current view", cw
-  ).observes('currentView') #.on('init')
+  ).observes('currentView').on('init')
 
 `export default ModalContainerView`
