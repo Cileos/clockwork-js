@@ -11,7 +11,7 @@ ModalContainerView = Ember.ContainerView.extend
           @get('controller').send 'closeModal'
 
   closeModal: ->
-    @$().dialog('destroy')
+    @$()?.dialog('destroy')
 
   observeViews: (->
     cw = @get('currentView')
