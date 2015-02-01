@@ -78,8 +78,6 @@ export default App;
 *  * etc.
 *
 *    extra outlet?
-*      * no route for it :/
-*      * yes, we can have a ModalRoute to inherit from that renders into that outlet
 *      * give the outlet a view
 *         {{outlet view='modalContainer'}}
 *      * which has a layout containing all the modal div-crap

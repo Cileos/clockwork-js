@@ -12,5 +12,4 @@ section.two-columns.has-calendar role="content"
 
 team-colors-css content=controllers.application.loadedTeams
 
-#modal
-  = outlet "modal"
+= outlet "modal" view='modalContainer'
