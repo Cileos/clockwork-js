@@ -4,16 +4,23 @@ ModalContainerView = Ember.ContainerView.extend
   tagName: 'div'
   elementId: 'modal'
 
-  childViewsDidChange: (views, idx, removed, added)->
-    @_super(views, idx, removed, added)
-    if added > 0
-      console?.debug "inserted"
-      Ember.run.scheduleOnce 'afterRender', this, ->
-        @$().dialog
-          close: (event, ui)=>
-            @get('controller').send 'closeModal'
-    if removed > 0
-      console?.debug "removed"
-      @$().dialog('destroy')
+  openModal: ->
+    Ember.run.scheduleOnce 'afterRender', this, ->
+      @$().dialog
+        close: (event, ui)=>
+          @get('controller').send 'closeModal'
+
+  closeModal: ->
+    @$().dialog('destroy')
+
+  observeViews: (->
+    cw = @get('currentView')
+    if cw
+      @openModal()
+    else
+      @closeModal()
+
+    console?.debug "current view", cw
+  ).observes('currentView') #.on('init')
 
 `export default ModalContainerView`
