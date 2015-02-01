@@ -6,4 +6,9 @@ ApplicationController = Ember.Controller.extend
   queryParams: ['beta']
   beta: null
 
+  # Only contains the teams loaded on the side, for
+  # example by being included in /schedulings
+  loadedTeams: Ember.computed 'store', ->
+    @get('store').all 'team'
+
 `export default ApplicationController`
