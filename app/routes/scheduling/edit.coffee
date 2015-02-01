@@ -7,8 +7,7 @@ SchedulingEditRoute = Ember.Route.extend
 
   actions:
     closeModal: ->
-      # TODO generic parentRoute
-      @transitionTo 'dashboard'
+      @transitionTo @get('parentRoute.parentRouteName')
 
   deactivate: ->
     @disconnectOutlet 'modal'
