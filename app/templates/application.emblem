@@ -1,1 +1,2 @@
+link-to 'dashboard' | Dashboard
 = outlet
